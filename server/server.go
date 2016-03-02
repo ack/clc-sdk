@@ -257,6 +257,26 @@ type SecondaryNetwork struct {
 	IPAddress string `json:"ipAddress,omitempty"`
 }
 
+type QueuedOperation struct {
+	OperationID string `json:"operationId,omitempty"`
+	URI         string `json:"uri,omitempty"`
+}
+
+func (q *QueuedOperation) GetStatusID() (bool, string) {
+	return q.OperationID != "", q.OperationID
+}
+
+func (q *QueuedOperation) GetHref() (bool, string) {
+	var path = ""
+	if q.URI != "" {
+		u, err := url.Parse(q.URI)
+		if err == nil {
+			path = u.Path
+		}
+	}
+	return path != "", path
+}
+
 func UpdateCPU(num int) api.Update {
 	return api.Update{
 		Op:     "set",
