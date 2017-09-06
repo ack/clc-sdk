@@ -25,6 +25,17 @@ func New(config Config) *Client {
 	}
 }
 
+func NewFromToken(token string) *Client {
+	config, _ := NewConfig("", "")
+	return &Client{
+		config: config,
+		Token: Token {
+			Token: token,
+		},
+		client: http.DefaultClient,
+	}
+}
+
 type HTTP interface {
 	Get(url string, resp interface{}) error
 	Post(url string, body, resp interface{}) error

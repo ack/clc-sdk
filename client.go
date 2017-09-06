@@ -27,7 +27,20 @@ func New(config api.Config) *Client {
 	c := &Client{
 		client: api.New(config),
 	}
+	c.Configure()
+	return c
+}
 
+func NewFromAliasToken(alias, token string) *Client {
+	c := &Client{
+		client: api.NewFromToken(token),
+	}
+	c.Configure()
+	c.Alias(alias)
+	return c
+}
+
+func (c *Client) Configure() {
 	c.Server = server.New(c.client)
 	c.Status = status.New(c.client)
 	c.AA = aa.New(c.client)
@@ -35,8 +48,6 @@ func New(config api.Config) *Client {
 	c.LB = lb.New(c.client)
 	c.Group = group.New(c.client)
 	c.DC = dc.New(c.client)
-
-	return c
 }
 
 func (c *Client) Alias(alias string) *Client {
